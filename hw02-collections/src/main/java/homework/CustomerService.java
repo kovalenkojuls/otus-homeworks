@@ -6,15 +6,6 @@ import java.util.TreeMap;
 public class CustomerService {
     private TreeMap<Customer, String> map = new TreeMap<>();
 
-    private Map.Entry<Customer, String> getNewMapEntry(Map.Entry<Customer, String> entry) {
-        Customer key = new Customer(
-                entry.getKey().getId(),
-                entry.getKey().getName(),
-                entry.getKey().getScores());
-
-        return Map.entry(key, entry.getValue());
-    }
-
     public Map.Entry<Customer, String> getSmallest() {
         return getNewMapEntry(map.firstEntry());
     }
@@ -30,5 +21,14 @@ public class CustomerService {
 
     public void add(Customer customer, String data) {
         map.put(customer, data);
+    }
+
+    private Map.Entry<Customer, String> getNewMapEntry(Map.Entry<Customer, String> entry) {
+        Customer key = new Customer(
+                entry.getKey().getId(),
+                entry.getKey().getName(),
+                entry.getKey().getScores());
+
+        return Map.entry(key, entry.getValue());
     }
 }

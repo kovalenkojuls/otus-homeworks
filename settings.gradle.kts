@@ -1,6 +1,6 @@
-rootProject.name = "otusJava"
+rootProject.name = "otus"
 include("hw01-gradle")
-project(":hw01-gradle").name = "gradleJar"
+include("hw02-collections")
 
 pluginManagement {
     val jgitver: String by settings

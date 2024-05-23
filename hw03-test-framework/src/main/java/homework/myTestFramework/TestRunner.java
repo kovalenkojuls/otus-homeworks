@@ -7,16 +7,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class TestRunner {
-    private Class<?> testClass;
-
-    private int allTests = 0,
-            failTests = 0,
-            doneTests = 0;
-
-    private void printStat() {
+    private void printStat(int allTests, int completedTests, int failTests) {
         System.out.println("_____________________________________");
         System.out.println("| Total     | Done      | Fail      |");
-        System.out.printf( "| %d         | %d         | %d         |\n", allTests, doneTests, failTests);
+        System.out.printf( "| %d         | %d         | %d         |\n", allTests, completedTests, failTests);
         System.out.println("_____________________________________");
     }
 
@@ -27,29 +21,32 @@ public class TestRunner {
         }
     }
 
-    private void runTest(ArrayList<Method> beforeMethods,
+    private boolean runTest(Class<?> testClass,
+                         ArrayList<Method> beforeMethods,
                          Method testMethod,
                          ArrayList<Method> afterMethods) throws NoSuchMethodException,
             InvocationTargetException, InstantiationException, IllegalAccessException {
 
         var testObject = ReflectionHelper.createObject(testClass);
 
+        boolean testStatus = true;
         try {
             runMethods(testObject, beforeMethods);
             testMethod.invoke(testObject);
-            doneTests++;
         } catch (Exception e) {
             System.out.printf("[Object %s]: exception\n", testObject.hashCode());
-            failTests++;
+            testStatus = false;
         } finally {
             runMethods(testObject, afterMethods);
         }
+
+        return testStatus;
     }
 
     public void startTests(String className) throws ClassNotFoundException, NoSuchMethodException,
             InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        testClass = Class.forName(className);
+        Class<?> testClass = Class.forName(className);
         var allMethods = testClass.getDeclaredMethods();
 
         ArrayList<Method> beforeMethods, testMethods, afterMethods;
@@ -57,11 +54,16 @@ public class TestRunner {
         afterMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, After.class);
         testMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, Test.class);
 
-        allTests = testMethods.size();
+        int allTests = testMethods.size(), completedTests = 0, failTests = 0;
         for (Method testMethod: testMethods) {
-            runTest(beforeMethods, testMethod, afterMethods);
+            boolean testStatus = runTest(testClass, beforeMethods, testMethod, afterMethods);
+            if (testStatus) {
+                completedTests++;
+            } else {
+                failTests++;
+            }
         }
 
-        printStat();
+        printStat(allTests, completedTests, failTests);
     }
 }

@@ -7,6 +7,29 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class TestRunner {
+    public void startTests(String className) throws ClassNotFoundException, NoSuchMethodException,
+            InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        Class<?> testClass = Class.forName(className);
+        var allMethods = testClass.getDeclaredMethods();
+
+        ArrayList<Method> beforeMethods, testMethods, afterMethods;
+        beforeMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, Before.class);
+        afterMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, After.class);
+        testMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, Test.class);
+
+        int allTests = testMethods.size(), completedTests = 0, failTests = 0;
+        for (Method testMethod: testMethods) {
+            boolean testStatus = runTest(testClass, beforeMethods, testMethod, afterMethods);
+            if (testStatus) {
+                completedTests++;
+            } else {
+                failTests++;
+            }
+        }
+
+        printStat(allTests, completedTests, failTests);
+    }
     private void printStat(int allTests, int completedTests, int failTests) {
         System.out.println("_____________________________________");
         System.out.println("| Total     | Done      | Fail      |");
@@ -41,29 +64,5 @@ public class TestRunner {
         }
 
         return testStatus;
-    }
-
-    public void startTests(String className) throws ClassNotFoundException, NoSuchMethodException,
-            InvocationTargetException, InstantiationException, IllegalAccessException {
-
-        Class<?> testClass = Class.forName(className);
-        var allMethods = testClass.getDeclaredMethods();
-
-        ArrayList<Method> beforeMethods, testMethods, afterMethods;
-        beforeMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, Before.class);
-        afterMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, After.class);
-        testMethods = ReflectionHelper.getMethodsByAnnotation(allMethods, Test.class);
-
-        int allTests = testMethods.size(), completedTests = 0, failTests = 0;
-        for (Method testMethod: testMethods) {
-            boolean testStatus = runTest(testClass, beforeMethods, testMethod, afterMethods);
-            if (testStatus) {
-                completedTests++;
-            } else {
-                failTests++;
-            }
-        }
-
-        printStat(allTests, completedTests, failTests);
     }
 }

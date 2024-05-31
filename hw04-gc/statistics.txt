@@ -15,15 +15,18 @@ HEAP 2048m: spend msec:29879, sec:29
 HEAP 920m наиболее оптимальный.
 
 После оптимизации кода:
-HEAP 256m:  spend msec:4501, sec:4
-HEAP 512m:  spend msec:3790, sec:3
-HEAP 824m:  spend msec:3584, sec:3
-HEAP 900m:  spend msec:3434, sec:3
-HEAP 912m:  spend msec:3488, sec:3
-HEAP 920m:  spend msec:3538, sec:3
-HEAP 924m:  spend msec:3583, sec:3
-HEAP 950m:  spend msec:3613, sec:3
-HEAP 1024m: spend msec:3650, sec:3
-HEAP 1124m: spend msec:3710, sec:3
-HEAP 1536m: spend msec:3860, sec:3
-HEAP 2048m: spend msec:5755, sec:5
+HEAP 256m:  spend msec:2396, sec:2
+HEAP 512m:  spend msec:2365, sec:2
+HEAP 824m:  spend msec:2397, sec:2
+HEAP 900m:  spend msec:2413, sec:2
+HEAP 912m:  spend msec:2344, sec:2
+HEAP 920m:  spend msec:2430, sec:2
+HEAP 924m:  spend msec:2444, sec:2
+HEAP 950m:  spend msec:2311, sec:2
+HEAP 1024m: spend msec:2331, sec:2
+HEAP 1124m: spend msec:2471, sec:2
+HEAP 1536m: spend msec:2396, sec:2
+HEAP 2048m: spend msec:2486, sec:2
+
+После оптимизации кода изменения размеров HEAP не приводят к увеличению скорости выполнения.
+Оптимальный размер HEAP в таком случае 256m.

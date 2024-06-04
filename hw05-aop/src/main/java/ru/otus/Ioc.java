@@ -3,8 +3,8 @@ package ru.otus;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ class Ioc {
 
     static class LogInvocationHandler implements InvocationHandler {
         private final TestLoggingInterface testLogging;
-        private static final ArrayList<String> methodsForLog = new ArrayList<>();
+        private final HashSet<String> methodsForLog = new HashSet<>();
 
         LogInvocationHandler(TestLoggingInterface testLogging) {
             this.testLogging = testLogging;

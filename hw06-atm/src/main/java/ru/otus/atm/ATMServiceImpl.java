@@ -37,7 +37,7 @@ public class ATMServiceImpl implements ATMService {
     public List<Banknote> getBanknotes(int amount) {
         List<Banknote> banknotesForReturn = new ArrayList<>();
 
-        if (!(amount <= getAmount() && allDenomination.checkAmount(amount))) {
+        if (amount > getAmount() || amount % 10 != 0) {
             throw new RuntimeException("Wrong amount");
         }
 

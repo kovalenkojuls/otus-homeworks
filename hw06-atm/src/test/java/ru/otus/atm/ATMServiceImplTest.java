@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
-import ru.otus.atm.banknote.AllDenominationRUB;
 import ru.otus.atm.banknote.AllDenomination;
 import ru.otus.atm.banknote.Banknote;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.stream.Stream;
 
 @DisplayName("Сервис ATMServiceImplTest должен ")
 public class ATMServiceImplTest {
-    private AllDenomination allDenomination;
     private ATMService atmService;
 
     private static List<List<Banknote>> getBanknoteList() {
@@ -87,9 +85,10 @@ public class ATMServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        allDenomination = mock(AllDenominationRUB.class);
+        AllDenomination allDenomination = mock(AllDenomination.class);
         var allDenominationList = List.of(5_000,1_000, 500, 100, 50,10);
         given(allDenomination.getAllDenomination()).willReturn(allDenominationList);
+        atmService = new ATMServiceImpl(allDenomination);
     }
 
 
@@ -97,8 +96,6 @@ public class ATMServiceImplTest {
     @ParameterizedTest(name = "{2}")
     @MethodSource("generateDataForPut")
     public void putBanknotesAndCheckATMAmount(List<Banknote> banknotes, int amount, String prompt) {
-        atmService = new ATMServiceImpl(allDenomination);
-
         atmService.putBanknotes(banknotes);
         assertEquals(amount, atmService.getAmount());
     }
@@ -107,9 +104,6 @@ public class ATMServiceImplTest {
     @ParameterizedTest(name = "{3}")
     @MethodSource("generateDataForGet")
     public void putBanknotesGetBanknotesAndCheckATMAmount(List<Banknote> banknotes, int get, int rest, String prompt) {
-        given(allDenomination.checkAmount(get)).willReturn(true);
-        atmService = new ATMServiceImpl(allDenomination);
-
         atmService.putBanknotes(banknotes);
         atmService.getBanknotes(get);
         assertEquals(rest, atmService.getAmount());
@@ -119,8 +113,6 @@ public class ATMServiceImplTest {
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {"Внесли 10, пытаемся снять 100"})
     void putBanknotesGetBanknotesAngGetException(String prompt) {
-        atmService = new ATMServiceImpl(allDenomination);
-
         atmService.putBanknotes(List.of(new Banknote(10)));
         assertThrows(RuntimeException.class, () -> atmService.getBanknotes(100));
     }
@@ -129,8 +121,6 @@ public class ATMServiceImplTest {
     @ParameterizedTest(name = "{0}")
     @ValueSource(strings = {"Внесли 100, пытаемся снять 11"})
     void putBanknotesGetBanknotesAngGetException2(String prompt) {
-        atmService = new ATMServiceImpl(allDenomination);
-
         atmService.putBanknotes(List.of(new Banknote(100)));
         assertThrows(RuntimeException.class, () -> atmService.getBanknotes(101));
     }

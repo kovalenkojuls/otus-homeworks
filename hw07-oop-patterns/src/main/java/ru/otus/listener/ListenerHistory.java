@@ -5,9 +5,9 @@ import java.util.*;
 import ru.otus.model.Message;
 
 public class ListenerHistory implements Listener, HistoryReader {
-    private final TreeMap<Long, Message> history = new TreeMap<>();
+    private final HashMap<Long, Message> history = new HashMap<>();
 
-    public TreeMap<Long, Message> getHistory() {
+    public HashMap<Long, Message> getHistory() {
         return history;
     }
 

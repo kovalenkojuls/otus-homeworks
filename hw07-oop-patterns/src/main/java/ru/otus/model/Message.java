@@ -191,7 +191,8 @@ public class Message {
             this.field10 = field10;
             this.field11 = field11;
             this.field12 = field12;
-            this.field13 = new ObjectForMessage(new ArrayList<>(field13.getData()));
+            this.field13 = field13 == null ?
+                    null : new ObjectForMessage(new ArrayList<>(field13.getData()));
         }
 
         public Builder field1(String field1) {
@@ -255,7 +256,8 @@ public class Message {
         }
 
         public Builder field13(ObjectForMessage field13) {
-            this.field13 = new ObjectForMessage(new ArrayList<>(field13.getData()));
+            this.field13 = field13 == null ?
+                    null : new ObjectForMessage(new ArrayList<>(field13.getData()));
             return this;
         }
 

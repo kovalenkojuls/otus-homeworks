@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalTime;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,6 +49,6 @@ public class ProcessorThrowExceptionTest {
         when(timeProvider.getTime()).thenReturn(localTime);
 
         var processor = new ProcessorThrowException(timeProvider);
-        processor.process(null);
+        assertDoesNotThrow(() -> processor.process(null));
     }
 }

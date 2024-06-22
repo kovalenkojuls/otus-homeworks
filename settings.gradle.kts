@@ -5,6 +5,7 @@ include("hw03-test-framework")
 include("hw04-gc")
 include("hw05-aop")
 include("hw06-atm")
+include("hw07-oop-patterns")
 
 pluginManagement {
     val jgitver: String by settings

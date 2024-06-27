@@ -17,8 +17,12 @@ public class FileSerializer implements Serializer {
     }
 
     @Override
-    public void serialize(Map<String, Double> data) throws IOException {
+    public void serialize(Map<String, Double> data) {
         var file = new File(fileName);
-        mapper.writeValue(file, data);
+        try {
+            mapper.writeValue(file, data);
+        } catch (IOException e) {
+            throw new FileProcessException(e);
+        }
     }
 }

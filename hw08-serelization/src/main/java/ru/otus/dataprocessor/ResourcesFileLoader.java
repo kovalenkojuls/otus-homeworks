@@ -18,8 +18,11 @@ public class ResourcesFileLoader implements Loader {
     }
 
     @Override
-    public List<Measurement> load() throws IOException {
-        var file = new File(ClassLoader.getSystemResource(fileName).getFile());
-        return mapper.readValue(file, new TypeReference<List<Measurement>>(){});
+    public List<Measurement> load() {
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName)) {
+            return mapper.readValue(inputStream, new TypeReference<List<Measurement>>(){});
+        } catch (IOException e) {
+            throw new FileProcessException(e);
+        }
     }
 }

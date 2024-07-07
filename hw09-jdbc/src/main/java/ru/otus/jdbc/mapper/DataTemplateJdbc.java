@@ -34,7 +34,9 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                 List.of(id),
                 rs -> {
                     try {
-                        if (!rs.next()) return null;
+                        if (!rs.next()) {
+                            return null;
+                        }
                         return fillNewInstance(rs);
                     } catch (SQLException e) {
                         throw new DataTemplateException(e);

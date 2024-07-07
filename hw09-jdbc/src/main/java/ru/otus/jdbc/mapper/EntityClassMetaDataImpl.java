@@ -9,6 +9,9 @@ import java.util.List;
 
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     private final Class<T> clazz;
+    private Field idField = null;
+    private List<Field> fieldsWithoutId = null;
+    private List<Field> allFields = null;
 
     public EntityClassMetaDataImpl(Class<T> clazz) {
         this.clazz = clazz;
@@ -30,26 +33,41 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
 
     @Override
     public Field getIdField() {
+        if (idField != null) {
+            return idField;
+        }
+        
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(Id.class)) {
+                idField = field;
                 return field;
             }
         }
-        return null;
+        
+        throw new RuntimeException("the id field was not found in class " + clazz.getName());
     }
 
     @Override
     public List<Field> getAllFields() {
-        return Arrays.asList(clazz.getDeclaredFields());
+        if (allFields == null) {
+            allFields = Arrays.asList(clazz.getDeclaredFields());
+        }
+        return allFields;
     }
 
     @Override
     public List<Field> getFieldsWithoutId() {
+        if (this.fieldsWithoutId != null) {
+            return this.fieldsWithoutId;
+        }
+
         List<Field> fieldsWithoutId = new ArrayList<>();
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(Id.class)) continue;
             fieldsWithoutId.add(field);
         }
-        return fieldsWithoutId;
+
+        this.fieldsWithoutId = fieldsWithoutId;
+        return this.fieldsWithoutId;
     }
 }

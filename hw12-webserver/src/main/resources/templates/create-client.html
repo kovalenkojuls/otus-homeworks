@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+    </head>
+
+    <body>
+        <h3>Создание клиента</h3>
+
+        <form action="create-client" method="post">
+            <table>
+                <tr>
+                    <td>Имя</td>
+                    <td>
+                        <input type="text" id="name" name="name" class="field-long">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Адрес</td>
+                    <td>
+                        <input type="text" id="address" name="address" class="field-long">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Телефон</td>
+                    <td>
+                        <input type="text" id="phones" name="phones" class="field-long">
+                    </td>
+                </tr>
+            </table>
+            <p style="color: grey">Если телефонов несколько, перечислите их через запятую.<br>
+                Например: 88009007070,89008007060,81002003040</p>
+            <input type="submit" value="Создать" class="button">
+        </form>
+        <a href="client" class="button">Вернутся к списку клиентов</a>
+    </body>
+</html>

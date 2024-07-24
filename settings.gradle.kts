@@ -1,4 +1,5 @@
 rootProject.name = "otus"
+
 include("hw01-gradle")
 include("hw02-collections")
 include("hw03-test-framework")
@@ -10,6 +11,7 @@ include("hw08-serelization")
 include("hw09-jdbc")
 include("hw10-hibernate")
 include("hw11-cache")
+include("hw12-webserver")
 
 pluginManagement {
     val jgitver: String by settings
@@ -32,4 +34,3 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
-

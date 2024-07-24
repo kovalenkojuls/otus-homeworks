@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+    </head>
+
+    <body>
+        <#if (clients?size != 0)>
+            <h2>Список всех клиентов:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <td style="width: 20px"><strong>Id</strong></td>
+                        <td style="width: 100px"><strong>Имя</strong></td>
+                        <td style="width: 100px"><strong>Адрес</strong></td>
+                        <td style="width: 250px"><strong>Телефоны</strong></td>
+                    </tr>
+                </thead>
+
+                <#list clients>
+                <tbody>
+                    <#items as client>
+                    <tr>
+                        <td>${client.id}</td>
+                        <td>${client.name}</td>
+                        <#if client.address??>
+                            <td>${client.address.street}</td>
+                        </#if>
+                        <#if client.phones??>
+                            <td>${client.phones?map(phone -> phone.number)?join(", ")}</td>
+                        </#if>
+                    </tr>
+                    </#items>
+                </tbody>
+                </#list>
+            </table>
+        <#else>
+            <h4 style="color: grey; font-style: italic">Список клиентов пуст</h4>
+        </#if>
+
+        <a href="create-client" class="button">Создать нового клиента</a>
+    </body>
+</html>

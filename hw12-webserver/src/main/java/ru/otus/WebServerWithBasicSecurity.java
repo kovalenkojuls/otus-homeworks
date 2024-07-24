@@ -27,25 +27,27 @@ public class WebServerWithBasicSecurity {
     private static final String TEMPLATES_DIR = "/templates/";
 
     public static void main(String[] args) throws Exception {
-        var configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
+        SessionFactory sessionFactory = createHibernateSessionFactory();
+        UsersWebServer usersWebServer = createUsersWebServer(sessionFactory);
+        usersWebServer.join();
+    }
 
+    private static SessionFactory createHibernateSessionFactory() {
+        var configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
         var dbUrl = configuration.getProperty("hibernate.connection.url");
         var dbUserName = configuration.getProperty("hibernate.connection.username");
         var dbPassword = configuration.getProperty("hibernate.connection.password");
 
         new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
 
-        var sessionFactory = HibernateUtils.buildSessionFactory(configuration,
+        return HibernateUtils.buildSessionFactory(configuration,
                 Client.class,
                 Address.class,
                 Phone.class,
                 User.class);
-
-        UsersWebServer usersWebServer = getUsersWebServer(sessionFactory);
-        usersWebServer.join();
     }
 
-    private static UsersWebServer getUsersWebServer(SessionFactory sessionFactory) throws Exception {
+    private static UsersWebServer createUsersWebServer(SessionFactory sessionFactory) throws Exception {
         var transactionManager = new TransactionManagerHibernate(sessionFactory);
         var clientTemplate = new DataTemplateHibernate<>(Client.class);
         var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);

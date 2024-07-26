@@ -4,7 +4,7 @@ import ru.otus.appcontainer.api.AppComponent;
 import ru.otus.appcontainer.api.AppComponentsContainerConfig;
 import ru.otus.services.*;
 
-@AppComponentsContainerConfig(order = 1)
+//@AppComponentsContainerConfig(order = 1)
 public class AppConfig {
 
     @AppComponent(order = 0, name = "equationPreparer")

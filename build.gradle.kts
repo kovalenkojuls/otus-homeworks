@@ -33,6 +33,7 @@ allprojects {
     val protobufBom: String by project
     val guava: String by project
     val asm: String by project
+    val reflections: String by project
 
 
     apply(plugin = "io.spring.dependency-management")
@@ -45,6 +46,7 @@ allprojects {
             }
             dependency("com.google.guava:guava:$guava")
             dependency("org.ow2.asm:asm-commons:$asm")
+            dependency("org.reflections:reflections:$reflections")
         }
     }
 }

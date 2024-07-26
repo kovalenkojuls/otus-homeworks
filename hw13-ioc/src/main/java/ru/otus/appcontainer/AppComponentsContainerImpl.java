@@ -20,6 +20,10 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         processConfig(initialConfigClass);
     }
 
+    public AppComponentsContainerImpl(Class<?>... initialConfigClasses) {
+        processManyConfigs(initialConfigClasses);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
@@ -47,6 +51,40 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
             throw new RuntimeException(String.format(ERROR_MSG_NOT_FOUND, componentName));
         }
         return (C) component;
+    }
+
+    private void processManyConfigs(Class<?>... initialConfigClasses) {
+        var sortedConfigs = sortConfigsByOrder(initialConfigClasses);
+        for (int order = 0; order <= sortedConfigs.size(); order++) {
+            if (!sortedConfigs.containsKey(order)) {
+                continue;
+            }
+
+            for (Class<?> config : sortedConfigs.get(order)) {
+                processConfig(config);
+            }
+        }
+    }
+
+    private TreeMap<Integer, List<Class<?>>> sortConfigsByOrder(Class<?>... initialConfigClasses) {
+        TreeMap<Integer, List<Class<?>>> sortedConfigs = new TreeMap<>();
+
+        for (Class<?> initialConfigClass: initialConfigClasses) {
+            var appComponentsContainerConfig = initialConfigClass.getAnnotation(AppComponentsContainerConfig.class);
+            if (Objects.isNull(appComponentsContainerConfig)) {
+                throw new RuntimeException(
+                        String.format("Annotation @AppComponentsContainerConfig not found in config class %s",
+                                initialConfigClass.getName()));
+            }
+
+            int order = appComponentsContainerConfig.order();
+            if (!sortedConfigs.containsKey(order)) {
+                sortedConfigs.put(order, new ArrayList<Class<?>>());
+            }
+            sortedConfigs.get(order).add(initialConfigClass);
+        }
+
+        return sortedConfigs;
     }
 
     private void processConfig(Class<?> configClass) {
@@ -109,7 +147,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                 continue;
             }
 
-            var order = appComponentAnnotation.order();
+            int order = appComponentAnnotation.order();
             if (!sortedMethods.containsKey(order)) {
                 sortedMethods.put(order, new ArrayList<Method>());
             }

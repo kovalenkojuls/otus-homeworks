@@ -12,7 +12,7 @@ import ru.otus.appcontainer.api.AppComponentsContainerConfig;
 import static org.reflections.scanners.Scanners.TypesAnnotated;
 
 @SuppressWarnings("squid:S1068")
-public class AppComponentsContainerImpl implements AppComponentsContainer {
+public final class AppComponentsContainerImpl implements AppComponentsContainer {
     private final static String ERROR_MSG_NOT_FOUND = "Component %s not found in context.";
     private final static String ERROR_MSG_DUPLICATED = "Component %s is duplicated in context.";
     private final static String ERROR_MSG_NOT_CONFIG = "Given class is not config %s";
@@ -112,13 +112,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         Class<?>[] parameterTypes = method.getParameterTypes();
 
         for (Class<?> parameterType: parameterTypes) {
-            var componentFromContext = appComponents
-                    .stream()
-                    .filter(c -> parameterType.isAssignableFrom(c.getClass()))
-                    .findFirst()
-                    .orElseThrow(() ->new RuntimeException(String.format(ERROR_MSG_NOT_FOUND, parameterType)));
-
-            parameters.add(componentFromContext);
+            parameters.add(getAppComponent(parameterType));
         }
 
         return parameters.toArray();

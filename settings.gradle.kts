@@ -7,7 +7,7 @@ include("hw04-gc")
 include("hw05-aop")
 include("hw06-atm")
 include("hw07-oop-patterns")
-include("hw08-serelization")
+include("hw08-serialization")
 include("hw09-jdbc")
 include("hw10-hibernate")
 include("hw11-cache")
@@ -35,3 +35,4 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
     }
 }
+

@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <style>
+            table,
+            th,
+            td {
+              padding: 10px;
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h2>Список всех клиентов:</h2>
+        <div th:if="${clients.size() != 0}">
+            <table class="clients">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Адрес</th>
+                        <th>Телефоны</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="client : ${clients}">
+                        <td th:text="${client.id}"></td>
+                        <td th:text="${client.name}"></td>
+                        <td th:text="${client.address.street}"></td>
+                        <td th:text="${#strings.arrayJoin(client.phones.![number], ', ')}"></td>
+                        <td>
+                            <a th:href="@{'/client/update/'+${client.id}}" type="submit">
+                                <button type="button">Обновить клиента</button>
+                            </a>
+                            <br/>
+                            <a th:href="@{'/client/delete/'+${client.id}}" type="submit">
+                                <button type="button">Удалить клиента</button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="${clients.size() != 0}">
+            <h4 style="color: grey; font-style: italic">Список клиентов пуст</h4>
+        </div>
+        <br/><br/>
+        <a th:href="@{/client/create}" type="submit">
+            <button type="button">Создать нового клиента</button>
+        </a>
+    </body>
+</html>

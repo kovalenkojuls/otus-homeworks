@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <style>
+            input {width: 350px}
+        </style>
+    </head>
+
+    <body>
+        <h3 th:text="${pageName}"></h3>
+
+        <form th:action="@{/client/save}" th:object="${client}" th:method="post">
+            <table>
+                <tr>
+                    <td>Имя</td>
+                    <input type="hidden" id="id" name="id" th:if="*{id != null}" th:value="*{id}">
+                    <td>
+                        <input type="text" id="name" name="name" class="field-long" th:value="*{name}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Адрес</td>
+                    <td>
+                        <input type="text" id="address" name="address" class="field-long"
+                               th:if="*{address != null}" th:value="*{address.street}">
+                        <input type="text" id="address" name="address" class="field-long"
+                               th:unless="*{address != null}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Телефон</td>
+                    <td>
+                        <input type="text" id="phones" name="phones" class="field-long"
+                               th:if="*{phones != null}" th:value="*{#strings.arrayJoin(phones.![number], ', ')}">
+                        <input type="text" id="phones" name="phones" class="field-long"
+                               th:unless="*{phones != null}">
+                    </td>
+                </tr>
+            </table>
+            <p style="color: grey">Если телефонов несколько, перечислите их через запятую.<br>
+                Например: 88009007070,89008007060,81002003040</p>
+            <input type="submit" th:value="${buttonName}" class="button">
+        </form>
+        <a href="/" class="button">Вернутся к списку клиентов</a>
+    </body>
+</html>

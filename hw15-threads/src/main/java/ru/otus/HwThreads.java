@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 public class HwThreads {
     private static final Logger logger = LoggerFactory.getLogger(HwThreads.class);
     private boolean firstIteration = true;
+    private String lastThreadPrint;
 
     private final int MIN_VALUE = 1;
     private final int MAX_VALUE = 10;
@@ -35,10 +36,14 @@ public class HwThreads {
         }
         firstIteration = false;
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             logger.info("{}: {}", Thread.currentThread().getName(), number);
+            lastThreadPrint = Thread.currentThread().getName();
             notifyAll();
-            waitWrapper();
+
+            while (Thread.currentThread().getName().equals(lastThreadPrint)) {
+                waitWrapper();
+            }
 
             number = isIncrease ? number + 1 : number - 1;
             if (number == MAX_VALUE || number == MIN_VALUE) {
@@ -54,6 +59,7 @@ public class HwThreads {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             logger.info("{} was interrupted", Thread.currentThread().getName());
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -62,6 +68,7 @@ public class HwThreads {
             wait();
         } catch (InterruptedException e) {
             logger.info("{} was interrupted", Thread.currentThread().getName());
+            Thread.currentThread().interrupt();
         }
     }
 }

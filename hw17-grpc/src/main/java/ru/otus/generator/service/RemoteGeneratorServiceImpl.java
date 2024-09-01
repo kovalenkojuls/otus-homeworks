@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class RemoteGeneratorServiceImpl extends RemoteGeneratorServiceGrpc.RemoteGeneratorServiceImplBase {
+
     private static final Logger logger = LoggerFactory.getLogger(RemoteGeneratorServiceImpl.class);
 
     @Override
@@ -16,13 +17,14 @@ public class RemoteGeneratorServiceImpl extends RemoteGeneratorServiceGrpc.Remot
         int lastValue = request.getLastValue();
 
         for (int i = firstValue + 1; i <= lastValue; i++) {
-            logger.info("Generate the number: {}", i);
+            logger.info("generate the number: {}", i);
             NumberResponse response = NumberResponse
                     .newBuilder()
                     .setNumber(i)
                     .build();
 
             responseObserver.onNext(response);
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {

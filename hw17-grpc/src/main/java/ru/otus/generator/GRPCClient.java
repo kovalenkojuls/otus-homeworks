@@ -21,7 +21,7 @@ public class GRPCClient {
     private static void processServerResponses(GeneratorResponseObserver generatorResponseObserver) throws InterruptedException {
         int currentValue = 0;
         for (int i = 0; i < 50; i++) {
-            currentValue = currentValue + generatorResponseObserver.getLastNumberFromServer() + 1;
+            currentValue = currentValue + generatorResponseObserver.getAndResetLastNumberFromServer() + 1;
             logger.info("currentValue = {}", currentValue);
 
             Thread.sleep(1000);

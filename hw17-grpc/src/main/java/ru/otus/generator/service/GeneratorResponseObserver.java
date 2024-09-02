@@ -23,7 +23,7 @@ public class GeneratorResponseObserver implements StreamObserver<NumberResponse>
         lastNumberFromServer.set(response.getNumber());
     }
 
-    public int getLastNumberFromServer() {
+    public int getAndResetLastNumberFromServer() {
         return lastNumberFromServer.getAndSet(0);
     }
 

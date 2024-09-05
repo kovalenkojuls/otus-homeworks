@@ -35,7 +35,7 @@ allprojects {
     val asm: String by project
     val reflections: String by project
     val jsr305: String by project
-
+    val jetty: String by project
     val grpc: String by project
 
     apply(plugin = "io.spring.dependency-management")
@@ -50,6 +50,14 @@ allprojects {
             dependency("org.ow2.asm:asm-commons:$asm")
             dependency("org.reflections:reflections:$reflections")
             dependency("com.google.code.findbugs:jsr305:$jsr305")
+
+            dependency("org.eclipse.jetty.ee10:jetty-ee10-servlet:$jetty")
+            dependency("org.eclipse.jetty:jetty-server:$jetty")
+            dependency("org.eclipse.jetty.ee10:jetty-ee10-webapp:$jetty")
+            dependency("org.eclipse.jetty:jetty-security:$jetty")
+            dependency("org.eclipse.jetty:jetty-http:$jetty")
+            dependency("org.eclipse.jetty:jetty-io:$jetty")
+            dependency("org.eclipse.jetty:jetty-util:$jetty")
 
             dependency("io.grpc:grpc-netty:$grpc")
             dependency("io.grpc:grpc-protobuf:$grpc")

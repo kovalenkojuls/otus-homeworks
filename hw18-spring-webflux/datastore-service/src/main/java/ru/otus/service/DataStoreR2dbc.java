@@ -32,7 +32,16 @@ public class DataStoreR2dbc implements DataStore {
     @Override
     public Flux<Message> loadMessages(String roomId) {
         log.info("loadMessages roomId:{}", roomId);
-        return (roomId.equals("1408") ? messageRepository.findAll() : messageRepository.findByRoomId(roomId))
+        return messageRepository
+                .findByRoomId(roomId)
+                .delayElements(Duration.of(1, SECONDS), workerPool);
+    }
+
+    @Override
+    public Flux<Message> loadAllMessages() {
+        log.info("loadAllMessages");
+        return messageRepository
+                .findAll()
                 .delayElements(Duration.of(1, SECONDS), workerPool);
     }
 }

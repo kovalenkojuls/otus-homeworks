@@ -1,4 +1,7 @@
-# Java Developer (Professional).
+### Курс ОТУС Java Developer (Professional).
 
-### Домашние работы к курсу https://otus.ru/lessons/java-professional/
+[Программа курса](https://github.com/kovalenkojuls/otus-homeworks/blob/master/Java_Developer_Professional_course_program.pdf)
+
+В данном репозитории представлены домашние работы к курсу.
+
 
